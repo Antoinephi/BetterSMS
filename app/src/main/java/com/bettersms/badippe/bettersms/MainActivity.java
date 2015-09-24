@@ -2,12 +2,14 @@ package com.bettersms.badippe.bettersms;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.telephony.SM
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,10 +41,20 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void searchContact(View v){
+        ListView contactList = (ListView)findViewById(R.id.listView_contact);
+        contactList.addView(new TextView.setText("toto"));
+        contactList.setVisibility(View.VISIBLE);
+    }
+
     public void changeText(View v)   {
         Button b = (Button)findViewById(v.getId());
         EditText text = (EditText)findViewById(R.id.editText);
-        b.setText(text.getText());
+        EditText sendTo = (EditText)findViewById(R.id.contactSearchBar);
+
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(sendTo.getText().toString(), null, text.getText().toString(), null, null);
+        text.setText("");
 
     }
 }
