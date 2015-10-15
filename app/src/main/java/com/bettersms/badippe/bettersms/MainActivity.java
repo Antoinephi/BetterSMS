@@ -41,12 +41,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void searchContact(View v){
-        ListView contactList = (ListView)findViewById(R.id.listView_contact);
-        contactList.addView(new TextView.setText("toto"));
-        contactList.setVisibility(View.VISIBLE);
-    }
-
     public void changeText(View v)   {
         Button b = (Button)findViewById(v.getId());
         EditText text = (EditText)findViewById(R.id.editText);
@@ -55,6 +49,5 @@ public class MainActivity extends AppCompatActivity {
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(sendTo.getText().toString(), null, text.getText().toString(), null, null);
         text.setText("");
-
     }
 }
