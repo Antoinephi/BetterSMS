@@ -1,21 +1,25 @@
 package com.bettersms.badippe.bettersms;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by philippe on 28/09/15.
+ */
+public class ListContactsActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.list_contact_activity);
     }
 
     @Override
@@ -40,19 +44,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void searchContact(View v){
-        Intent intent = new Intent(this, ListViewLoader.class);
-        startActivity(intent);
-    }
+    public void setContacts(View v)   {
+        ListView list = (ListView)findViewById(R.id.list_contact);
+        list.addView(findViewById(R.id.contact_min_view));
 
-    public void changeText(View v)   {
-        Button b = (Button)findViewById(v.getId());
-        EditText text = (EditText)findViewById(R.id.editText);
-        EditText sendTo = (EditText)findViewById(R.id.contactSearchBar);
-
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(sendTo.getText().toString(), null, text.getText().toString(), null, null);
-        text.setText("");
 
     }
+
 }

@@ -21,7 +21,7 @@ public class ContactsFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState){
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.article_view, container, false);
+        return null; // inflater.inflate(R.layout.article_view, container, false);
     }
 
 
