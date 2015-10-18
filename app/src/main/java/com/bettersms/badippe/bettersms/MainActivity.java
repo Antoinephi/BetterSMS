@@ -4,18 +4,26 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(R.layout.activity_main);
+        Bundle extras = getIntent().getExtras();
+        if( extras != null){
+            setPhoneNumber(extras.getString("phone"));
+        }
     }
 
     @Override
@@ -40,7 +48,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void setPhoneNumber(String number){
+        EditText sendTo = (EditText)findViewById(R.id.contactSearchBar);
+        sendTo.setText(number, TextView.BufferType.EDITABLE);
+    }
+
     public void searchContact(View v){
+        System.out.print("ok");
         Intent intent = new Intent(this, ListViewLoader.class);
         startActivity(intent);
     }

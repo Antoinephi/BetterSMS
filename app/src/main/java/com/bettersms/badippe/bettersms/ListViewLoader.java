@@ -3,10 +3,12 @@ package com.bettersms.badippe.bettersms;
 import android.app.ListActivity;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+
 /**
  * Created by philippe on 28/09/15.
  */
@@ -26,19 +30,22 @@ public class ListViewLoader extends ListActivity
     SimpleCursorAdapter mAdapter;
 
     // These are the Contacts rows that we will retrieve
-    static final String[] PROJECTION = new String[] {ContactsContract.Data._ID,
-            ContactsContract.Data.DISPLAY_NAME};
+    /*static final String[] PROJECTION = new String[] {ContactsContract.Data._ID,
+            ContactsContract.Data.DISPLAY_NAME};*/
+    static final String[] PROJECTION = new String[] {ContactsContract.CommonDataKinds.Phone._ID, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME};
 
     // This is the select criteria
     static final String SELECTION = "((" +
             ContactsContract.Contacts.IN_VISIBLE_GROUP + " = 1) AND (" +
-            ContactsContract.Data.DISPLAY_NAME + " NOTNULL) AND (" +
-            ContactsContract.Data.DISPLAY_NAME + " != '' ) AND (" +
-            ContactsContract.Data.HAS_PHONE_NUMBER + " != 0))";
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_PRIMARY + " NOTNULL) AND (" +
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_PRIMARY + " != '' ) AND (" +
+            ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER + " != 0))";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.print("CLICK CLICK LCIK");
+        Log.v("ok", "plplplpl");
 
         // Create a progress bar to display while the list loads
         ProgressBar progressBar = new ProgressBar(this);
@@ -71,7 +78,8 @@ public class ListViewLoader extends ListActivity
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // Now create and return a CursorLoader that will take care of
         // creating a Cursor for the data being displayed.
-        return new CursorLoader(this, ContactsContract.Data.CONTENT_URI,
+
+        return new CursorLoader(this, ContactsContract.CommonDataKinds.Phone.CONTENT_URI ,
                 PROJECTION, SELECTION, null, null);
     }
 
@@ -93,5 +101,15 @@ public class ListViewLoader extends ListActivity
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // Do something when a list item is clicked
+        super.onListItemClick(l, v, position, id);
+
+        TextView contact = (TextView) v.findViewById(android.R.id.text1);
+        String txt = contact.getText().toString();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("phone", txt);
+        startActivity(intent);
+        Log.v("CLICK", "CLICKKKKKKKKKK");
+
     }
 }
