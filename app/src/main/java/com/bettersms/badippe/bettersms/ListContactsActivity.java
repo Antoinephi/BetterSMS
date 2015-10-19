@@ -48,7 +48,6 @@ public class ListContactsActivity extends AppCompatActivity {
         ListView list = (ListView)findViewById(R.id.list_contact);
         list.addView(findViewById(R.id.contact_min_view));
 
-
     }
 
 }
