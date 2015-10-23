@@ -12,14 +12,14 @@
         android:layout_height="wrap_content"
         android:text="Send"
         android:id="@+id/button"
-        android:onClick="changeText"
+        android:onClick="sendMessage"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/messageField"
         android:layout_alignTop="@+id/button"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/button" />
@@ -27,10 +27,10 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/contactSearchBar"
+        android:id="@+id/contactSearchField"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/contact_search_button" />
+        android:layout_toStartOf="@+id/contactSearchButton" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -38,8 +38,9 @@
         android:layout_height="wrap_content"
         android:text="Contacts"
         android:onClick="searchContact"
-        android:id="@+id/contact_search_button"
-        android:layout_alignTop="@+id/contactSearchBar"
+        android:id="@+id/contactSearchButton"
+        android:layout_alignTop="@+id/contactSearchField"
         android:layout_alignParentEnd="true" />
+
 
 </RelativeLayout>

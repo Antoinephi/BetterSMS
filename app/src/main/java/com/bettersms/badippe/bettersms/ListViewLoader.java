@@ -13,12 +13,6 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import android.view.Gravity;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.SimpleCursorAdapter;
-
 /**
  * Created by philippe on 28/09/15.
  */
