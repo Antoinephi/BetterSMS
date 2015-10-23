@@ -4,29 +4,18 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-
-    private Contact contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(R.layout.activity_main);
-        Bundle extras = getIntent().getExtras();
-        if( extras != null){
-            contact = new Contact(extras.getString("name"), extras.getString("phone"));
-            setPhoneNumber(extras.getString("name"));
-        }
     }
 
     @Override
@@ -51,13 +40,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setPhoneNumber(String name){
-        EditText sendTo = (EditText)findViewById(R.id.contactSearchBar);
-        sendTo.setText(name, TextView.BufferType.EDITABLE);
-    }
-
     public void searchContact(View v){
-        System.out.print("ok");
         Intent intent = new Intent(this, ListViewLoader.class);
         startActivity(intent);
     }
@@ -66,11 +49,10 @@ public class MainActivity extends AppCompatActivity {
         Button b = (Button)findViewById(v.getId());
         EditText text = (EditText)findViewById(R.id.editText);
         EditText sendTo = (EditText)findViewById(R.id.contactSearchBar);
-        
-        if(!sendTo.getText().toString().equals("") && !text.getText().toString().equals("")) {
-            SmsManager sms = SmsManager.getDefault();
-            sms.sendTextMessage(contact.getPhone(), null, text.getText().toString(), null, null);
-            text.setText("");
-        }
+
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(sendTo.getText().toString(), null, text.getText().toString(), null, null);
+        text.setText("");
+
     }
 }

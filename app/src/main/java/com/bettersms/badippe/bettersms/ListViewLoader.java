@@ -13,6 +13,12 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.SimpleCursorAdapter;
+
 /**
  * Created by philippe on 28/09/15.
  */
@@ -34,6 +40,7 @@ public class ListViewLoader extends ListActivity
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_PRIMARY + " NOTNULL) AND (" +
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_PRIMARY + " != '' ) AND (" +
             ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER + " != 0))";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +74,6 @@ public class ListViewLoader extends ListActivity
         while(data.moveToNext()){
             mAdapter.add(new Contact(data.getString(1), data.getString(2)));
         }
-
     }
 
     // Called when a previously created loader is reset, making the data unavailable
@@ -76,6 +82,7 @@ public class ListViewLoader extends ListActivity
         // above is about to be closed.  We need to make sure we are no
         // longer using it.
        mAdapter.clear();
+
     }
 
     @Override
