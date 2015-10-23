@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Contact contact;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Bundle extras = getIntent().getExtras();
         if( extras != null){
-            setPhoneNumber(extras.getString("phone"));
+            contact = new Contact(extras.getString("name"), extras.getString("phone"));
+            setPhoneNumber(extras.getString("name"));
         }
     }
 
@@ -48,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setPhoneNumber(String number){
+    public void setPhoneNumber(String name){
         EditText sendTo = (EditText)findViewById(R.id.contactSearchBar);
-        sendTo.setText(number, TextView.BufferType.EDITABLE);
+        sendTo.setText(name, TextView.BufferType.EDITABLE);
     }
 
     public void searchContact(View v){
@@ -63,10 +66,11 @@ public class MainActivity extends AppCompatActivity {
         Button b = (Button)findViewById(v.getId());
         EditText text = (EditText)findViewById(R.id.editText);
         EditText sendTo = (EditText)findViewById(R.id.contactSearchBar);
-
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(sendTo.getText().toString(), null, text.getText().toString(), null, null);
-        text.setText("");
-
+        
+        if(!sendTo.getText().toString().equals("") && !text.getText().toString().equals("")) {
+            SmsManager sms = SmsManager.getDefault();
+            sms.sendTextMessage(contact.getPhone(), null, text.getText().toString(), null, null);
+            text.setText("");
+        }
     }
 }

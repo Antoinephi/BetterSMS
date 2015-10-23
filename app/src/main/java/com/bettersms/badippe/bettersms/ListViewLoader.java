@@ -8,15 +8,10 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by philippe on 28/09/15.
@@ -26,13 +21,12 @@ public class ListViewLoader extends ListActivity
 
 
 
+    ArrayList<Contact> contactList;
     // This is the Adapter being used to display the list's data
-    SimpleCursorAdapter mAdapter;
+    ContactAdapter mAdapter;
 
     // These are the Contacts rows that we will retrieve
-    /*static final String[] PROJECTION = new String[] {ContactsContract.Data._ID,
-            ContactsContract.Data.DISPLAY_NAME};*/
-    static final String[] PROJECTION = new String[] {ContactsContract.CommonDataKinds.Phone._ID, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME};
+    static final String[] PROJECTION = new String[] {ContactsContract.CommonDataKinds.Phone._ID, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
 
     // This is the select criteria
     static final String SELECTION = "((" +
@@ -44,34 +38,16 @@ public class ListViewLoader extends ListActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.print("CLICK CLICK LCIK");
-        Log.v("ok", "plplplpl");
+        //setContentView(R.layout.list_contact_activity);
+        contactList = new ArrayList<Contact>();
 
-        // Create a progress bar to display while the list loads
-        ProgressBar progressBar = new ProgressBar(this);
-        progressBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
-        progressBar.setIndeterminate(true);
-        getListView().setEmptyView(progressBar);
-
-        // Must add the progress bar to the root of the layout
-        ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
-        root.addView(progressBar);
-
-        // For the cursor adapter, specify which columns go into which views
-        String[] fromColumns = {ContactsContract.Data.DISPLAY_NAME};
-        int[] toViews = {android.R.id.text1}; // The TextView in simple_list_item_1
-
-        // Create an empty adapter we will use to display the loaded data.
-        // We pass null for the cursor, then update it in onLoadFinished()
-        mAdapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_list_item_1, null,
-                fromColumns, toViews, 0);
-        setListAdapter(mAdapter);
 
         // Prepare the loader.  Either re-connect with an existing one,
         // or start a new one.
+        mAdapter = new ContactAdapter(this, R.layout.item_contact, contactList);
+
         getLoaderManager().initLoader(0, null, this);
+        setListAdapter(mAdapter);
     }
 
     // Called when a new Loader needs to be created
@@ -87,7 +63,11 @@ public class ListViewLoader extends ListActivity
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
-        mAdapter.swapCursor(data);
+
+        while(data.moveToNext()){
+            mAdapter.add(new Contact(data.getString(1), data.getString(2)));
+        }
+
     }
 
     // Called when a previously created loader is reset, making the data unavailable
@@ -95,21 +75,19 @@ public class ListViewLoader extends ListActivity
         // This is called when the last Cursor provided to onLoadFinished()
         // above is about to be closed.  We need to make sure we are no
         // longer using it.
-        mAdapter.swapCursor(null);
+       mAdapter.clear();
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // Do something when a list item is clicked
         super.onListItemClick(l, v, position, id);
-
-        TextView contact = (TextView) v.findViewById(android.R.id.text1);
-        String txt = contact.getText().toString();
+        Contact c = mAdapter.getItem(position);
 
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("phone", txt);
+        intent.putExtra("name", c.getName());
+        intent.putExtra("phone", c.getPhone());
         startActivity(intent);
-        Log.v("CLICK", "CLICKKKKKKKKKK");
 
     }
 }
